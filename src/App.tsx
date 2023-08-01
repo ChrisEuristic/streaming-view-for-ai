@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useRef, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [imageNumber, setImageNumber] = useState(1);
+
+  const interval = useRef<NodeJS.Timer>();
+  const runStreaming = useCallback(() => {
+    interval.current = setInterval(() => {
+      setImageNumber((pre) => (pre + 1) % 878);
+    }, 100 / 3);
+  }, []);
+
+  // useEffect(() => {
+    // if (imageNumber > 877) 
+    // clearInterval(interval.current);
+  // }, [imageNumber]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={runStreaming}>run {imageNumber}</button>
+      <img src={`streaming_data/${imageNumber}.jpg`} alt="streaming" />
     </div>
   );
 }
